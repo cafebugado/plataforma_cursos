@@ -164,7 +164,7 @@ const ProfilePage: React.FC = () => {
               />
             </Box>
 
-            <Typography variant="h6" fontWeight={700}>{profile?.full_name}</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 700 }}>{profile?.full_name}</Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>{user?.email}</Typography>
             <Chip label="Aluno" color="secondary" size="small" icon={<School sx={{ fontSize: 14 }} />} />
 
@@ -246,8 +246,8 @@ const ProfilePage: React.FC = () => {
                           {...register('full_name')}
                           error={!!errors.full_name}
                           helperText={errors.full_name?.message}
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start"><Person fontSize="small" /></InputAdornment>,
+                          slotProps={{
+                            input: { startAdornment: <InputAdornment position="start"><Person fontSize="small" /></InputAdornment> },
                           }}
                         />
                       </Grid>
@@ -257,8 +257,8 @@ const ProfilePage: React.FC = () => {
                           fullWidth
                           value={user?.email ?? ''}
                           disabled
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start"><Lock fontSize="small" /></InputAdornment>,
+                          slotProps={{
+                            input: { startAdornment: <InputAdornment position="start"><Lock fontSize="small" /></InputAdornment> },
                           }}
                         />
                       </Grid>
@@ -270,8 +270,8 @@ const ProfilePage: React.FC = () => {
                           {...register('phone')}
                           error={!!errors.phone}
                           helperText={errors.phone?.message}
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start"><Phone fontSize="small" /></InputAdornment>,
+                          slotProps={{
+                            input: { startAdornment: <InputAdornment position="start"><Phone fontSize="small" /></InputAdornment> },
                           }}
                         />
                       </Grid>
@@ -283,7 +283,7 @@ const ProfilePage: React.FC = () => {
                           {...register('birth_date')}
                           error={!!errors.birth_date}
                           helperText={errors.birth_date?.message}
-                          InputLabelProps={{ shrink: true }}
+                          slotProps={{ inputLabel: { shrink: true } }}
                         />
                       </Grid>
                       <Grid size={{ xs: 12 }}>
@@ -294,8 +294,8 @@ const ProfilePage: React.FC = () => {
                           {...register('location')}
                           error={!!errors.location}
                           helperText={errors.location?.message}
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start"><Place fontSize="small" /></InputAdornment>,
+                          slotProps={{
+                            input: { startAdornment: <InputAdornment position="start"><Place fontSize="small" /></InputAdornment> },
                           }}
                         />
                       </Grid>
@@ -325,8 +325,8 @@ const ProfilePage: React.FC = () => {
                           {...register('linkedin_url')}
                           error={!!errors.linkedin_url}
                           helperText={errors.linkedin_url?.message}
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start"><LinkedIn fontSize="small" /></InputAdornment>,
+                          slotProps={{
+                            input: { startAdornment: <InputAdornment position="start"><LinkedIn fontSize="small" /></InputAdornment> },
                           }}
                         />
                       </Grid>
@@ -338,8 +338,8 @@ const ProfilePage: React.FC = () => {
                           {...register('github_url')}
                           error={!!errors.github_url}
                           helperText={errors.github_url?.message}
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start"><GitHub fontSize="small" /></InputAdornment>,
+                          slotProps={{
+                            input: { startAdornment: <InputAdornment position="start"><GitHub fontSize="small" /></InputAdornment> },
                           }}
                         />
                       </Grid>
@@ -351,8 +351,8 @@ const ProfilePage: React.FC = () => {
                           {...register('website_url')}
                           error={!!errors.website_url}
                           helperText={errors.website_url?.message}
-                          InputProps={{
-                            startAdornment: <InputAdornment position="start"><Language fontSize="small" /></InputAdornment>,
+                          slotProps={{
+                            input: { startAdornment: <InputAdornment position="start"><Language fontSize="small" /></InputAdornment> },
                           }}
                         />
                       </Grid>
@@ -366,15 +366,15 @@ const ProfilePage: React.FC = () => {
                         A alteração de senha é feita pelo e-mail de redefinição enviado pelo sistema.
                       </Alert>
                       <Box>
-                        <Typography variant="subtitle2" fontWeight={600} gutterBottom>E-mail da conta</Typography>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600 }} gutterBottom>E-mail da conta</Typography>
                         <TextField fullWidth value={user?.email ?? ''} disabled size="small" />
                       </Box>
                       <Box>
-                        <Typography variant="subtitle2" fontWeight={600} gutterBottom>Perfil de acesso</Typography>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600 }} gutterBottom>Perfil de acesso</Typography>
                         <TextField fullWidth value="Aluno" disabled size="small" />
                       </Box>
                       <Box>
-                        <Typography variant="subtitle2" fontWeight={600} gutterBottom>Último acesso</Typography>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600 }} gutterBottom>Último acesso</Typography>
                         <TextField
                           fullWidth
                           value={user?.last_sign_in_at
@@ -385,7 +385,7 @@ const ProfilePage: React.FC = () => {
                         />
                       </Box>
                       <Box>
-                        <Typography variant="subtitle2" fontWeight={600} gutterBottom>ID do usuário</Typography>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600 }} gutterBottom>ID do usuário</Typography>
                         <TextField fullWidth value={user?.id ?? ''} disabled size="small" />
                       </Box>
                     </Box>
