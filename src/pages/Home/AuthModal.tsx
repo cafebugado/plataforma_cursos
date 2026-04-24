@@ -70,10 +70,12 @@ const AuthModal: React.FC<AuthModalProps> = ({ mode, onClose }) => {
       onClose={onClose}
       maxWidth="sm"
       fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: 4,
-          p: { xs: 1, sm: 2 },
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: 4,
+            p: { xs: 1, sm: 2 },
+          },
         },
       }}
     >

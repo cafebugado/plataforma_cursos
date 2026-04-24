@@ -98,7 +98,7 @@ const ForWho: React.FC = () => {
           </Typography>
         </Box>
 
-        <Grid container spacing={4} justifyContent="center">
+        <Grid container spacing={4} sx={{ justifyContent: 'center' }}>
           {CARDS.map((card) => {
             const Icon = card.icon;
             return (

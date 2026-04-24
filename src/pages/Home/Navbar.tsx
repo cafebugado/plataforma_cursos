@@ -114,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = ({ onEnter, onRegister }) => {
         anchor="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        PaperProps={{ sx: { width: 280, p: 3 } }}
+        slotProps={{ paper: { sx: { width: 280, p: 3 } } }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -149,7 +149,7 @@ const Navbar: React.FC<NavbarProps> = ({ onEnter, onRegister }) => {
             >
               <ListItemText
                 primary={link.label}
-                primaryTypographyProps={{ fontWeight: 500, color: 'text.secondary' }}
+                slotProps={{ primary: { sx: { fontWeight: 500, color: 'text.secondary' } } }}
               />
             </ListItemButton>
           ))}

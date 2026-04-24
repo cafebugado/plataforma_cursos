@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import ProtectedRoute from '../../features/auth/ProtectedRoute';
 import HomePage from '../../pages/Home';
