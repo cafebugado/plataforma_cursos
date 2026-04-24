@@ -32,7 +32,7 @@ export const getCourseBySlug = async (slug: string) => {
   return data as unknown as Course;
 };
 
-export const createCourse = async (course: Omit<Course, 'id' | 'created_at' | 'updated_at' | 'modules'>) => {
+export const createCourse = async (course: Omit<Course, 'id' | 'created_at' | 'updated_at' | 'modules'> & { id?: string }) => {
   const { data, error } = await db
     .from('courses')
     .insert(course)

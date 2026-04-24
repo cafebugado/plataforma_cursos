@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
-  Box, Button, Card, CardContent, Chip, CircularProgress, Grid,
+  Box, Button, Card, CardContent, CircularProgress, Grid,
   LinearProgress, Typography,
 } from '@mui/material';
 import { PlayArrow, School } from '@mui/icons-material';
@@ -10,6 +10,7 @@ import { useAuth } from '../auth/AuthContext';
 import { getStudentEnrollments } from '../../services/supabase/progress';
 import PageHeader from '../../components/common/PageHeader';
 import EmptyState from '../../components/common/EmptyState';
+import CategoryChips from '../../components/common/CategoryChips';
 
 const StudentDashboard: React.FC = () => {
   const { user, profile } = useAuth();
@@ -53,7 +54,7 @@ const StudentDashboard: React.FC = () => {
                     sx={{ width: '100%', height: 140, objectFit: 'cover', borderRadius: '12px 12px 0 0' }}
                   />
                   <CardContent>
-                    <Chip label={course.category} size="small" variant="outlined" sx={{ mb: 1 }} />
+                    <Box sx={{ mb: 1 }}><CategoryChips category={course.category} size="small" /></Box>
                     <Typography variant="subtitle1" sx={{ fontWeight: 600 }} gutterBottom>{course.title}</Typography>
                     <Box sx={{ mb: 2 }}>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>

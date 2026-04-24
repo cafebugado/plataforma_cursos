@@ -1,13 +1,14 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
-  Box, Card, CardContent, CircularProgress, Grid, LinearProgress, Typography, Chip,
+  Box, Card, CardContent, CircularProgress, Grid, LinearProgress, Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import { getStudentEnrollments, getCourseProgress } from '../../services/supabase/progress';
 import PageHeader from '../../components/common/PageHeader';
 import EmptyState from '../../components/common/EmptyState';
+import CategoryChips from '../../components/common/CategoryChips';
 import { TrendingUp } from '@mui/icons-material';
 
 const ProgressPage: React.FC = () => {
@@ -89,7 +90,7 @@ const CourseProgressItem: React.FC<{
             sx={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 2, flexShrink: 0 }}
           />
           <Box sx={{ flexGrow: 1 }}>
-            <Chip label={category} size="small" variant="outlined" sx={{ mb: 0.5 }} />
+            <Box sx={{ mb: 0.5 }}><CategoryChips category={category} size="small" /></Box>
             <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>{courseTitle}</Typography>
             <Typography variant="caption" color="text.secondary">
               Matriculado em {new Date(enrolledAt).toLocaleDateString('pt-BR')}

@@ -3,6 +3,7 @@ import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Chip, Linear
 import { CheckCircle } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import type { Course } from '../../types';
+import CategoryChips from './CategoryChips';
 
 interface Props {
   course: Course;
@@ -28,9 +29,9 @@ const CourseProgressCard: React.FC<Props> = ({ course, progress, showEnrollButto
         <CardMedia component="img" height={160} image={thumbnail} alt={course.title} />
       </CardActionArea>
       <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
           <Chip label={levelLabels[course.level] ?? course.level} size="small" color="primary" variant="outlined" />
-          <Chip label={course.category} size="small" variant="outlined" />
+          <CategoryChips category={course.category} size="small" />
         </Box>
         <Typography variant="subtitle1" sx={{ fontWeight: 600, lineHeight: 1.3 }}>
           {course.title}

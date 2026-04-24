@@ -52,7 +52,10 @@ Acesso público começa pela **Landing Page** (`/`), que apresenta a plataforma 
 
 ### Administrador
 - Dashboard com estatísticas gerais (alunos, cursos, módulos, vídeos)
-- Gerenciamento completo de cursos (criar, editar, publicar/despublicar, thumbnail)
+- Gerenciamento completo de cursos (criar, editar, publicar/despublicar)
+- Upload de capa do curso via arquivo (drag & drop, JPG/PNG/WEBP/GIF, máx. 5 MB) ou URL externa
+- Categorias múltiplas por curso — inseridas como tags separadas por vírgula, exibidas como badges individuais nos cards
+- Slug do curso gerado automaticamente a partir do título (editável, com label flutuante correta)
 - Gerenciamento de módulos com reordenação
 - Adição e organização de vídeos do YouTube com reordenação
 - Criação de playlists dentro de módulos
@@ -94,7 +97,7 @@ lms-platform/
 │   │   ├── router/           # Configuração de rotas com lazy loading
 │   │   └── theme/            # Tema MUI personalizado (paleta, tipografia)
 │   ├── components/
-│   │   ├── common/           # Componentes reutilizáveis (StatCard, VideoCard, EmptyState…)
+│   │   ├── common/           # Componentes reutilizáveis (StatCard, VideoCard, EmptyState, CategoryChips, ThumbnailUpload…)
 │   │   └── layout/           # Shells de layout (AdminShell, StudentShell)
 │   ├── features/
 │   │   ├── admin/            # Painel administrativo (dashboard, CRUD completo)
@@ -292,6 +295,15 @@ Gerenciado pelo Supabase (PostgreSQL). Principais tabelas:
 | `quiz_options` | Alternativas (com flag de resposta correta) |
 | `quiz_attempts` | Tentativas com pontuação e resultado |
 | `quiz_answers` | Respostas individuais por tentativa |
+
+### Storage Buckets
+
+| Bucket | Acesso | Limite | Tipos permitidos |
+|--------|--------|--------|-----------------|
+| `avatars` | Público (leitura) | — | Qualquer imagem |
+| `course-assets` | Público (leitura) | 5 MB | JPG, PNG, WEBP, GIF |
+
+Upload no bucket `course-assets` é restrito a administradores via RLS.
 
 ### Row Level Security (RLS)
 

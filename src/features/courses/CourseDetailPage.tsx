@@ -12,6 +12,7 @@ import { getEnrollment, enrollInCourse } from '../../services/supabase/progress'
 import { getQuizByModule } from '../../services/supabase/quiz';
 import { useAuth } from '../auth/AuthContext';
 import PageHeader from '../../components/common/PageHeader';
+import CategoryChips from '../../components/common/CategoryChips';
 import QuizPanel from '../quiz/QuizPanel';
 
 const CourseDetailPage: React.FC = () => {
@@ -70,9 +71,9 @@ const CourseDetailPage: React.FC = () => {
             alt={course.title}
             sx={{ width: '100%', borderRadius: 3, mb: 3, maxHeight: 360, objectFit: 'cover' }}
           />
-          <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap' }}>
+          <Box sx={{ display: 'flex', gap: 1, mb: 2, flexWrap: 'wrap', alignItems: 'center' }}>
             <Chip label={levelLabels[course.level] ?? course.level} color="primary" />
-            <Chip label={course.category} variant="outlined" />
+            <CategoryChips category={course.category} />
           </Box>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
             {course.description}

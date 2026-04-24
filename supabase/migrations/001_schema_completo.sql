@@ -3,6 +3,7 @@
 -- Gerado a partir de: 001_initial_schema.sql
 --                     002_rls_policies.sql
 --                     003_profile_extended_fields.sql
+--                     004_course_assets_storage.sql
 -- =====================================================
 
 -- Enable UUID extension
@@ -224,11 +225,24 @@ create index idx_video_progress_user_id   on public.video_progress(user_id);
 create index idx_video_progress_video_id  on public.video_progress(video_id);
 create index idx_quiz_attempts_user_quiz  on public.quiz_attempts(user_id, quiz_id);
 
--- =====================
--- STORAGE: AVATARS BUCKET
--- =====================
+-- =====================================================================
+-- STORAGE BUCKETS
+-- =====================================================================
+
+-- Bucket público para avatares de usuários
 insert into storage.buckets (id, name, public)
 values ('avatars', 'avatars', true)
+on conflict (id) do nothing;
+
+-- Bucket público para assets de cursos (thumbnails)
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values (
+  'course-assets',
+  'course-assets',
+  true,
+  5242880, -- 5 MB
+  array['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+)
 on conflict (id) do nothing;
 
 -- =====================================================================
@@ -412,3 +426,31 @@ create policy "avatars_delete_own" on storage.objects
     bucket_id = 'avatars'
     and (storage.foldername(name))[1] = auth.uid()::text
   );
+
+-- =====================
+-- RLS: STORAGE — COURSE ASSETS
+-- =====================
+create policy "admins_upload_course_assets" on storage.objects
+  for insert to authenticated
+  with check (
+    bucket_id = 'course-assets'
+    and (select role from public.profiles where id = auth.uid()) = 'admin'
+  );
+
+create policy "admins_update_course_assets" on storage.objects
+  for update to authenticated
+  using (
+    bucket_id = 'course-assets'
+    and (select role from public.profiles where id = auth.uid()) = 'admin'
+  );
+
+create policy "admins_delete_course_assets" on storage.objects
+  for delete to authenticated
+  using (
+    bucket_id = 'course-assets'
+    and (select role from public.profiles where id = auth.uid()) = 'admin'
+  );
+
+create policy "public_read_course_assets" on storage.objects
+  for select to public
+  using (bucket_id = 'course-assets');

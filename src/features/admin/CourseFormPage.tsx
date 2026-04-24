@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  Alert, Box, Button, Card, CardContent, FormControlLabel, FormHelperText,
-  Grid, MenuItem, Switch, TextField,
+  Alert, Box, Button, Card, CardContent, Chip, FormControlLabel, FormHelperText,
+  Grid, MenuItem, Switch, TextField, Typography,
 } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { createCourse, getCourseById, updateCourse } from '../../services/supabase/courses';
+import { createCourse, getCourseById, updateCourse, uploadCourseThumbnail } from '../../services/supabase/courses';
 import { useAuth } from '../auth/AuthContext';
 import PageHeader from '../../components/common/PageHeader';
+import ThumbnailUpload from '../../components/common/ThumbnailUpload';
 
 const schema = z.object({
   title: z.string().min(3, 'Título obrigatório'),
@@ -25,6 +26,10 @@ const schema = z.object({
 
 type FormData = z.infer<typeof schema>;
 
+function generateId(): string {
+  return crypto.randomUUID();
+}
+
 const CourseFormPage: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -32,13 +37,18 @@ const CourseFormPage: React.FC = () => {
   const { user } = useAuth();
   const isEditing = !!id;
 
+  const pendingIdRef = useRef<string>(generateId());
+
   const { data: course } = useQuery({
     queryKey: ['course', id],
     queryFn: () => getCourseById(id!),
     enabled: isEditing,
   });
 
-  const { register, handleSubmit, control, reset, watch, setValue, formState: { errors, isSubmitting } } = useForm<FormData>({
+  const {
+    handleSubmit, control, reset, watch, setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       title: '', slug: '', short_description: '', description: '',
@@ -51,17 +61,28 @@ const CourseFormPage: React.FC = () => {
   }, [course, reset]);
 
   const titleValue = watch('title');
+  const thumbnailValue = watch('thumbnail_url');
+
   useEffect(() => {
     if (!isEditing && titleValue) {
-      setValue('slug', titleValue.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''));
+      setValue(
+        'slug',
+        titleValue.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+        { shouldDirty: true },
+      );
     }
   }, [titleValue, isEditing, setValue]);
+
+  const handleUpload = async (file: File): Promise<string> => {
+    const courseId = isEditing ? id! : pendingIdRef.current;
+    return uploadCourseThumbnail(courseId, file);
+  };
 
   const mutation = useMutation({
     mutationFn: (data: FormData) => {
       const payload = { ...data, thumbnail_url: data.thumbnail_url || null };
       if (isEditing) return updateCourse(id!, payload);
-      return createCourse({ ...payload, created_by: user!.id });
+      return createCourse({ ...payload, created_by: user!.id, id: pendingIdRef.current });
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['courses'] });
@@ -73,7 +94,11 @@ const CourseFormPage: React.FC = () => {
     <Box>
       <PageHeader
         title={isEditing ? 'Editar curso' : 'Novo curso'}
-        breadcrumbs={[{ label: 'Admin', to: '/admin' }, { label: 'Cursos', to: '/admin/courses' }, { label: isEditing ? 'Editar' : 'Novo' }]}
+        breadcrumbs={[
+          { label: 'Admin', to: '/admin' },
+          { label: 'Cursos', to: '/admin/courses' },
+          { label: isEditing ? 'Editar' : 'Novo' },
+        ]}
       />
 
       {mutation.isError && (
@@ -86,79 +111,190 @@ const CourseFormPage: React.FC = () => {
         <CardContent sx={{ p: 4 }}>
           <Box component="form" onSubmit={handleSubmit((d) => mutation.mutate(d))}>
             <Grid container spacing={3}>
+
               <Grid size={{ xs: 12, md: 8 }}>
-                <TextField
-                  label="Título"
-                  fullWidth
-                  {...register('title')}
-                  error={!!errors.title}
-                  helperText={errors.title?.message}
+                <Controller
+                  name="title"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Título"
+                      fullWidth
+                      error={!!errors.title}
+                      helperText={errors.title?.message}
+                    />
+                  )}
                 />
               </Grid>
+
               <Grid size={{ xs: 12, md: 4 }}>
-                <TextField
-                  label="Slug"
-                  fullWidth
-                  {...register('slug')}
-                  error={!!errors.slug}
-                  helperText={errors.slug?.message}
+                <Controller
+                  name="slug"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Slug"
+                      fullWidth
+                      error={!!errors.slug}
+                      helperText={errors.slug?.message}
+                    />
+                  )}
                 />
               </Grid>
+
               <Grid size={12}>
-                <TextField
-                  label="Descrição curta"
-                  fullWidth
-                  multiline
-                  rows={2}
-                  {...register('short_description')}
-                  error={!!errors.short_description}
-                  helperText={errors.short_description?.message}
+                <Controller
+                  name="short_description"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Descrição curta"
+                      fullWidth
+                      multiline
+                      rows={2}
+                      error={!!errors.short_description}
+                      helperText={errors.short_description?.message}
+                    />
+                  )}
                 />
               </Grid>
+
               <Grid size={12}>
-                <TextField
-                  label="Descrição completa"
-                  fullWidth
-                  multiline
-                  rows={5}
-                  {...register('description')}
-                  error={!!errors.description}
-                  helperText={errors.description?.message}
+                <Controller
+                  name="description"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Descrição completa"
+                      fullWidth
+                      multiline
+                      rows={5}
+                      error={!!errors.description}
+                      helperText={errors.description?.message}
+                    />
+                  )}
                 />
               </Grid>
+
               <Grid size={{ xs: 12, md: 4 }}>
-                <TextField
-                  select
-                  label="Nível"
-                  fullWidth
-                  defaultValue="beginner"
-                  {...register('level')}
-                  error={!!errors.level}
-                  helperText={errors.level?.message}
-                >
-                  <MenuItem value="beginner">Iniciante</MenuItem>
-                  <MenuItem value="intermediate">Intermediário</MenuItem>
-                  <MenuItem value="advanced">Avançado</MenuItem>
-                </TextField>
-              </Grid>
-              <Grid size={{ xs: 12, md: 4 }}>
-                <TextField
-                  label="Categoria"
-                  fullWidth
-                  {...register('category')}
-                  error={!!errors.category}
-                  helperText={errors.category?.message}
+                <Controller
+                  name="level"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      select
+                      label="Nível"
+                      fullWidth
+                      error={!!errors.level}
+                      helperText={errors.level?.message}
+                    >
+                      <MenuItem value="beginner">Iniciante</MenuItem>
+                      <MenuItem value="intermediate">Intermediário</MenuItem>
+                      <MenuItem value="advanced">Avançado</MenuItem>
+                    </TextField>
+                  )}
                 />
               </Grid>
+
               <Grid size={{ xs: 12, md: 4 }}>
-                <TextField
-                  label="URL da capa (opcional)"
-                  fullWidth
-                  {...register('thumbnail_url')}
-                  error={!!errors.thumbnail_url}
-                  helperText={errors.thumbnail_url?.message}
+                <Controller
+                  name="category"
+                  control={control}
+                  render={({ field }) => {
+                    const cats = field.value ? field.value.split(',').map((c: string) => c.trim()).filter(Boolean) : [];
+                    return (
+                      <Box>
+                        <Typography variant="caption" color={errors.category ? 'error' : 'text.secondary'} sx={{ mb: 0.5, display: 'block' }}>
+                          Categorias
+                        </Typography>
+                        <Box
+                          sx={{
+                            border: '1px solid',
+                            borderColor: errors.category ? 'error.main' : 'divider',
+                            borderRadius: 1,
+                            p: '8px 12px',
+                            minHeight: 56,
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: 0.5,
+                            alignItems: 'center',
+                            '&:focus-within': { borderColor: errors.category ? 'error.main' : 'primary.main', borderWidth: 2 },
+                          }}
+                        >
+                          {cats.map((cat: string) => (
+                            <Chip
+                              key={cat}
+                              label={cat}
+                              size="small"
+                              variant="outlined"
+                              onDelete={() => {
+                                const next = cats.filter((c: string) => c !== cat).join(', ');
+                                field.onChange(next);
+                              }}
+                            />
+                          ))}
+                          <Box
+                            component="input"
+                            placeholder={cats.length === 0 ? 'Digite e pressione vírgula...' : ''}
+                            onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                              const input = e.currentTarget;
+                              if (e.key === ',' || e.key === 'Enter') {
+                                e.preventDefault();
+                                const val = input.value.trim();
+                                if (val && !cats.includes(val)) {
+                                  field.onChange([...cats, val].join(', '));
+                                }
+                                input.value = '';
+                              } else if (e.key === 'Backspace' && input.value === '' && cats.length > 0) {
+                                field.onChange(cats.slice(0, -1).join(', '));
+                              }
+                            }}
+                            onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                              const val = e.currentTarget.value.trim();
+                              if (val && !cats.includes(val)) {
+                                field.onChange([...cats, val].join(', '));
+                                e.currentTarget.value = '';
+                              }
+                              field.onBlur();
+                            }}
+                            sx={{
+                              border: 'none', outline: 'none', flex: 1, minWidth: 80,
+                              fontSize: '0.875rem', fontFamily: 'inherit', bgcolor: 'transparent',
+                              color: 'text.primary', p: 0,
+                            }}
+                          />
+                        </Box>
+                        {errors.category && (
+                          <Typography variant="caption" color="error" sx={{ mt: 0.5, display: 'block' }}>
+                            {errors.category.message}
+                          </Typography>
+                        )}
+                        <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
+                          Pressione vírgula ou Enter para adicionar
+                        </Typography>
+                      </Box>
+                    );
+                  }}
                 />
               </Grid>
+
+              <Grid size={12}>
+                <Typography variant="subtitle2" sx={{ mb: 1, color: 'text.secondary' }}>
+                  Capa do curso
+                </Typography>
+                <ThumbnailUpload
+                  value={thumbnailValue}
+                  onChange={(url) => setValue('thumbnail_url', url, { shouldValidate: true, shouldDirty: true })}
+                  onUpload={handleUpload}
+                  error={errors.thumbnail_url?.message}
+                />
+              </Grid>
+
               <Grid size={12}>
                 <Controller
                   name="is_published"
@@ -174,6 +310,7 @@ const CourseFormPage: React.FC = () => {
                   )}
                 />
               </Grid>
+
               <Grid size={12}>
                 <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
                   <Button onClick={() => navigate('/admin/courses')}>Cancelar</Button>
@@ -182,6 +319,7 @@ const CourseFormPage: React.FC = () => {
                   </Button>
                 </Box>
               </Grid>
+
             </Grid>
           </Box>
         </CardContent>
