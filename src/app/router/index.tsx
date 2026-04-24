@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import ProtectedRoute from '../../features/auth/ProtectedRoute';
+import HomePage from '../../pages/Home';
 
 const Fallback = () => (
   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
@@ -40,7 +41,7 @@ const ProgressPage = lazy(() => import('../../features/progress/ProgressPage'));
 const ProfilePage = lazy(() => import('../../features/profile/ProfilePage'));
 
 export const router = createBrowserRouter([
-  { path: '/', element: <Navigate to="/app" replace /> },
+  { path: '/', element: <HomePage /> },
 
   { path: '/auth/login', element: wrap(LoginPage) },
   { path: '/auth/register', element: wrap(RegisterPage) },
