@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import React from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
 import { useAuth } from '../../features/auth/AuthContext';
 import Navbar from './Navbar';
@@ -7,11 +7,10 @@ import Hero from './Hero';
 import HowItWorks from './HowItWorks';
 import ForWho from './ForWho';
 import Footer from './Footer';
-import AuthModal, { type ModalMode } from './AuthModal';
 
 const HomePage: React.FC = () => {
   const { user, profile, loading } = useAuth();
-  const [modalMode, setModalMode] = useState<ModalMode>(null);
+  const navigate = useNavigate();
 
   if (loading) return null;
 
@@ -20,25 +19,26 @@ const HomePage: React.FC = () => {
     return <Navigate to={dest} replace />;
   }
 
+  const goToRegister = () => navigate('/auth/register');
+  const goToLogin = () => navigate('/auth/login');
+
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       <Navbar
-        onEnter={() => setModalMode('login')}
-        onRegister={() => setModalMode('register')}
+        onEnter={goToLogin}
+        onRegister={goToRegister}
       />
 
       <main>
         <Hero
-          onLearn={() => setModalMode('register')}
-          onTeach={() => setModalMode('login')}
+          onLearn={goToRegister}
+          onTeach={goToLogin}
         />
         <HowItWorks />
         <ForWho />
       </main>
 
       <Footer />
-
-      <AuthModal mode={modalMode} onClose={() => setModalMode(null)} />
     </Box>
   );
 };

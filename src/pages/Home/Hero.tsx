@@ -82,7 +82,7 @@ const Hero: React.FC<HeroProps> = ({ onLearn, onTeach }) => {
                 }}
               />
               <Typography variant="caption" sx={{ fontWeight: 600, letterSpacing: '0.04em' }}>
-                Plataforma de aprendizado online
+                100% gratuito · Powered by YouTube
               </Typography>
             </Box>
 
@@ -97,7 +97,7 @@ const Hero: React.FC<HeroProps> = ({ onLearn, onTeach }) => {
                 letterSpacing: '-0.03em',
               }}
             >
-              Aprenda no seu{' '}
+              Cursos{' '}
               <Box
                 component="span"
                 sx={{
@@ -116,9 +116,9 @@ const Hero: React.FC<HeroProps> = ({ onLearn, onTeach }) => {
                   },
                 }}
               >
-                ritmo
+                gratuitos
               </Box>
-              , evolua de verdade
+              {' '}com o melhor do YouTube
             </Typography>
 
             <Typography
@@ -131,9 +131,7 @@ const Hero: React.FC<HeroProps> = ({ onLearn, onTeach }) => {
                 maxWidth: 480,
               }}
             >
-              Cursos em vídeo com trilhas estruturadas, quizzes e progresso
-              rastreável. Tudo que você precisa para evoluir na carreira — em um
-              só lugar.
+              Reunimos os melhores vídeos gratuitos do YouTube em trilhas organizadas por tema e nível. Aprenda no seu ritmo, acompanhe seu progresso e evolua na carreira sem pagar nada.
             </Typography>
 
             <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
@@ -153,7 +151,7 @@ const Hero: React.FC<HeroProps> = ({ onLearn, onTeach }) => {
                   '&:active': { transform: 'translateY(0)' },
                 }}
               >
-                Quero aprender
+                Explorar cursos
               </Button>
               <Button
                 variant="outlined"
@@ -171,16 +169,16 @@ const Hero: React.FC<HeroProps> = ({ onLearn, onTeach }) => {
                   '&:active': { transform: 'translateY(0)' },
                 }}
               >
-                Quero ensinar
+                Sugerir conteúdo
               </Button>
             </Box>
 
             {/* Social proof */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mt: 6, flexWrap: 'wrap' }}>
               {[
-                { value: '500+', label: 'Aulas disponíveis' },
+                { value: '500+', label: 'Vídeos curados' },
                 { value: '2k+', label: 'Alunos ativos' },
-                { value: '98%', label: 'Satisfação' },
+                { value: '100%', label: 'Gratuito' },
               ].map((stat) => (
                 <Box key={stat.label}>
                   <Typography
@@ -376,7 +374,7 @@ const HeroIllustration: React.FC = () => (
     >
       <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: 'success.main' }} />
       <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.primary', whiteSpace: 'nowrap' }}>
-        Aula ao vivo
+        Via YouTube
       </Typography>
     </Box>
 
@@ -397,7 +395,7 @@ const HeroIllustration: React.FC = () => (
       }}
     >
       <Typography variant="caption" sx={{ fontWeight: 700, color: 'white', whiteSpace: 'nowrap' }}>
-        🏆 Certificado incluído
+        ✅ Totalmente gratuito
       </Typography>
     </Box>
   </Box>

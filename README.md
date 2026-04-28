@@ -1,6 +1,6 @@
 # EduPlatform — LMS
 
-Plataforma de ensino a distância (LMS) moderna e completa, construída com React 19, TypeScript e Supabase. Administradores gerenciam cursos, módulos, vídeos e quizzes; alunos assistem aulas, acompanham progresso e geram resumos por IA.
+Plataforma de aprendizado online **100% gratuita**, construída com React 19, TypeScript e Supabase. Reúne os melhores vídeos do YouTube em trilhas estruturadas para alunos evoluírem na carreira. Administradores gerenciam cursos, módulos, vídeos e quizzes; alunos assistem aulas, acompanham progresso e geram resumos por IA.
 
 ---
 
@@ -24,9 +24,9 @@ Plataforma de ensino a distância (LMS) moderna e completa, construída com Reac
 
 ## Visão Geral
 
-A **EduPlatform** é um sistema LMS que conecta administradores/instrutores e alunos em um ambiente de aprendizado digital. Com integração ao YouTube para vídeos, Google Gemini para resumos por IA e Supabase como backend completo (banco de dados, autenticação, storage e funções serverless), a plataforma oferece uma experiência rica e escalável.
+A **EduPlatform** é um LMS gratuito que organiza vídeos públicos do YouTube em trilhas estruturadas por tema e nível. Com integração ao YouTube para vídeos, Google Gemini para resumos por IA e Supabase como backend completo (banco de dados, autenticação, storage e funções serverless), a plataforma oferece uma experiência rica e escalável.
 
-Acesso público começa pela **Landing Page** (`/`), que apresenta a plataforma e direciona o visitante para login ou cadastro conforme seu perfil. Usuários autenticados são redirecionados automaticamente para o painel correto com base no seu papel (admin ou aluno).
+Acesso público começa pela **Landing Page** (`/`), que apresenta a plataforma e direciona o visitante para login ou cadastro como aluno. Usuários autenticados são redirecionados automaticamente para o painel correto com base no seu papel (admin ou aluno).
 
 ---
 
@@ -35,8 +35,8 @@ Acesso público começa pela **Landing Page** (`/`), que apresenta a plataforma 
 ### Landing Page (pública)
 - Apresentação da plataforma com hero section, CTAs e stats
 - Seção "Como funciona" com os 3 passos da jornada do aluno
-- Seção "Para quem é" com cards de benefícios por perfil
-- Modal de seleção de perfil para login/cadastro (Aluno ou Instrutor)
+- Seção "Para quem é" com benefícios para alunos
+- Navegação direta para login e cadastro (sem modal intermediário)
 - Navbar responsiva com menu hamburguer no mobile
 - Footer com links de navegação
 
@@ -116,9 +116,8 @@ lms-platform/
 │   │       ├── Navbar.tsx    # Navbar fixa com menu hamburguer
 │   │       ├── Hero.tsx      # Seção hero com CTAs e ilustração
 │   │       ├── HowItWorks.tsx# Seção "Como funciona"
-│   │       ├── ForWho.tsx    # Cards de perfil (aluno/instrutor)
-│   │       ├── Footer.tsx    # Rodapé
-│   │       └── AuthModal.tsx # Modal de seleção de perfil
+│   │       ├── ForWho.tsx    # Seção de benefícios para alunos
+│   │       └── Footer.tsx    # Rodapé
 │   ├── services/
 │   │   ├── supabase/         # auth, courses, modules, videos, profiles, quiz, progress
 │   │   ├── gemini/           # Geração e recuperação de resumos por IA
