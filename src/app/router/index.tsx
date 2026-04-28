@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 import ProtectedRoute from '../../features/auth/ProtectedRoute';
+import AuthTransition from '../../features/auth/AuthTransition';
 import HomePage from '../../pages/Home';
 
 const Fallback = () => (
@@ -43,9 +44,9 @@ const ProfilePage = lazy(() => import('../../features/profile/ProfilePage'));
 export const router = createBrowserRouter([
   { path: '/', element: <HomePage /> },
 
-  { path: '/auth/login', element: wrap(LoginPage) },
-  { path: '/auth/register', element: wrap(RegisterPage) },
-  { path: '/auth/forgot-password', element: wrap(ForgotPasswordPage) },
+  { path: '/auth/login', element: <AuthTransition>{wrap(LoginPage)}</AuthTransition> },
+  { path: '/auth/register', element: <AuthTransition>{wrap(RegisterPage)}</AuthTransition> },
+  { path: '/auth/forgot-password', element: <AuthTransition>{wrap(ForgotPasswordPage)}</AuthTransition> },
 
   {
     path: '/admin',

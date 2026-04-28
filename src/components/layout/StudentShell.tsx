@@ -36,7 +36,7 @@ const StudentShell: React.FC = () => {
         <Box sx={{ bgcolor: 'primary.main', borderRadius: 2, p: 0.75 }}>
           <School sx={{ color: 'white', fontSize: 20 }} />
         </Box>
-        <Typography variant="h6" sx={{ fontWeight: 700 }} color="primary">EduPlatform</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 700 }} color="primary">DevFlix Café</Typography>
       </Toolbar>
       <Divider />
       <List sx={{ px: 1, py: 1 }}>
@@ -93,7 +93,7 @@ const StudentShell: React.FC = () => {
             <Box sx={{ bgcolor: 'primary.main', borderRadius: 2, p: 0.75 }}>
               <School sx={{ color: 'white', fontSize: 20 }} />
             </Box>
-            <Typography variant="h6" sx={{ fontWeight: 700 }} color="primary">EduPlatform</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 700 }} color="primary">DevFlix Café</Typography>
           </Box>
           <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 1, flexGrow: 1 }}>
             {navItems.map((item) => (

@@ -98,7 +98,7 @@ const AdminShell: React.FC = () => {
             <School sx={{ color: 'white', fontSize: 20 }} />
           </Box>
           <Typography variant="h6" sx={{ fontWeight: 700 }} color="primary">
-            LMS Admin
+            DevFlix Café
           </Typography>
         </Toolbar>
         <Divider />

@@ -1,4 +1,4 @@
-# EduPlatform — LMS
+# DevFlix Café — LMS
 
 Plataforma de aprendizado online **100% gratuita**, construída com React 19, TypeScript e Supabase. Reúne os melhores vídeos do YouTube em trilhas estruturadas para alunos evoluírem na carreira. Administradores gerenciam cursos, módulos, vídeos e quizzes; alunos assistem aulas, acompanham progresso e geram resumos por IA.
 
@@ -24,7 +24,7 @@ Plataforma de aprendizado online **100% gratuita**, construída com React 19, Ty
 
 ## Visão Geral
 
-A **EduPlatform** é um LMS gratuito que organiza vídeos públicos do YouTube em trilhas estruturadas por tema e nível. Com integração ao YouTube para vídeos, Google Gemini para resumos por IA e Supabase como backend completo (banco de dados, autenticação, storage e funções serverless), a plataforma oferece uma experiência rica e escalável.
+A **DevFlix Café** é um LMS gratuito que organiza vídeos públicos do YouTube em trilhas estruturadas por tema e nível. Com integração ao YouTube para vídeos, Google Gemini para resumos por IA e Supabase como backend completo (banco de dados, autenticação, storage e funções serverless), a plataforma oferece uma experiência rica e escalável.
 
 Acesso público começa pela **Landing Page** (`/`), que apresenta a plataforma e direciona o visitante para login ou cadastro como aluno. Usuários autenticados são redirecionados automaticamente para o painel correto com base no seu papel (admin ou aluno).
 
@@ -39,6 +39,14 @@ Acesso público começa pela **Landing Page** (`/`), que apresenta a plataforma 
 - Navegação direta para login e cadastro (sem modal intermediário)
 - Navbar responsiva com menu hamburguer no mobile
 - Footer com links de navegação
+
+### Telas de Autenticação
+- Layout dividido em dois painéis (50/50) em telas `md+`
+- **Login**: formulário à direita, painel de branding à esquerda com cards de estatísticas da plataforma
+- **Cadastro**: formulário à esquerda, painel de branding à direita com lista de benefícios
+- **Recuperação de senha**: formulário à esquerda, painel à direita com dicas de segurança; tela de sucesso com animação ao enviar o link
+- Transição animada (slide + fade) ao navegar entre as páginas de auth
+- Em mobile, o painel de branding é ocultado e a logo aparece no topo do formulário
 
 ### Aluno
 - Cadastro, login e recuperação de senha
@@ -101,7 +109,7 @@ lms-platform/
 │   │   └── layout/           # Shells de layout (AdminShell, StudentShell)
 │   ├── features/
 │   │   ├── admin/            # Painel administrativo (dashboard, CRUD completo)
-│   │   ├── auth/             # Autenticação (login, cadastro, rotas protegidas)
+│   │   ├── auth/             # Autenticação (login, cadastro, recuperação de senha, transição animada)
 │   │   ├── courses/          # Páginas de cursos para alunos
 │   │   ├── modules/          # Módulos de curso
 │   │   ├── playlists/        # Playlists de vídeos

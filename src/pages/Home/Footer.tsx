@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
                 <SchoolIcon sx={{ color: 'white', fontSize: 18 }} />
               </Box>
               <Typography variant="h6" sx={{ color: 'white', fontWeight: 700 }}>
-                EduPlatform
+                DevFlix Café
               </Typography>
             </Box>
             <Typography
@@ -141,7 +141,7 @@ const Footer: React.FC = () => {
           }}
         >
           <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.35)' }}>
-            © {year} EduPlatform. Todos os direitos reservados.
+            © {year} DevFlix Café. Todos os direitos reservados.
           </Typography>
           <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.25)' }}>
             Feito com dedicação para quem aprende

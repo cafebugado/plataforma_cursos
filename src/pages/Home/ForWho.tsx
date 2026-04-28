@@ -129,7 +129,7 @@ const ForWho: React.FC = () => {
               transition: 'transform 0.15s, filter 0.15s',
             }}
           >
-            Começar agora — é grátis
+            Começar agora
           </Button>
         </Box>
       </Container>

@@ -70,7 +70,7 @@ const Navbar: React.FC<NavbarProps> = ({ onEnter, onRegister }) => {
                 <SchoolIcon sx={{ color: 'white', fontSize: 18 }} />
               </Box>
               <Typography variant="h6" sx={{ color: 'text.primary', letterSpacing: '-0.02em' }}>
-                Edu<Box component="span" sx={{ color: 'primary.main' }}>Platform</Box>
+                DevFlix<Box component="span" sx={{ color: 'primary.main' }}> Café</Box>
               </Typography>
             </Box>
 
@@ -132,7 +132,7 @@ const Navbar: React.FC<NavbarProps> = ({ onEnter, onRegister }) => {
               <SchoolIcon sx={{ color: 'white', fontSize: 16 }} />
             </Box>
             <Typography variant="h6" sx={{ color: 'text.primary' }}>
-              EduPlatform
+              DevFlix Café
             </Typography>
           </Box>
           <IconButton onClick={() => setDrawerOpen(false)} size="small">
