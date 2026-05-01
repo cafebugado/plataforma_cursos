@@ -322,7 +322,6 @@ const LessonPlayer: React.FC = () => {
           <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Aulas do curso</Typography>
 
           {course.modules?.map((mod) => {
-            const modQuiz = qc.getQueryData<Awaited<ReturnType<typeof getQuizByModule>>>(['quiz', mod.id]);
             const hasQuiz = mod.has_final_quiz;
             const quizUnlocked = isQuizUnlocked(mod);
             const quizPassed = quizPassedMap.get(mod.id) ?? false;

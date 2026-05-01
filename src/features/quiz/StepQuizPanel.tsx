@@ -150,8 +150,6 @@ const StepQuizPanel: React.FC<Props> = ({ quiz, moduleId, userId, onPassed }) =>
   // Step-by-step answering
   const currentQuestion = questions[step];
   const isLastStep = step === questions.length - 1;
-  const currentAnswered = !!answers[currentQuestion?.id];
-
   const handleConfirm = () => {
     if (!selected || !currentQuestion) return;
     const newAnswers = { ...answers, [currentQuestion.id]: selected };
