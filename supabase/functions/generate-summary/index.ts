@@ -28,7 +28,6 @@ serve(async (req) => {
     const { video_id } = await req.json();
     if (!video_id) throw new Error('video_id is required');
 
-    // Check enrollment
     const { data: video } = await supabase
       .from('videos')
       .select('*, courses(*)')
@@ -36,7 +35,6 @@ serve(async (req) => {
       .single();
     if (!video) throw new Error('Video not found');
 
-    // Rate limit: check last generation in the last 60 seconds
     const { data: recent } = await supabase
       .from('video_summaries')
       .select('id')
@@ -46,7 +44,6 @@ serve(async (req) => {
       .single();
     if (recent) throw new Error('Rate limit: wait 60 seconds before regenerating');
 
-    // Mark as generating
     await supabase.from('videos').update({ summary_status: 'generating' }).eq('id', video_id);
 
     const geminiApiKey = Deno.env.get('GEMINI_API_KEY');
@@ -70,18 +67,21 @@ Responda SOMENTE com um JSON válido no formato:
 }`;
 
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiApiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${geminiApiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.3, maxOutputTokens: 1024 },
+          generationConfig: { temperature: 0.3, maxOutputTokens: 4096 },
         }),
       }
     );
 
-    if (!geminiRes.ok) throw new Error(`Gemini API error: ${geminiRes.status}`);
+    if (!geminiRes.ok) {
+      const errBody = await geminiRes.text();
+      throw new Error(`Gemini API error: ${geminiRes.status} - ${errBody}`);
+    }
 
     const geminiData = await geminiRes.json();
     const rawText = geminiData.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
@@ -101,7 +101,7 @@ Responda SOMENTE com um JSON válido no formato:
         generated_by: user.id,
         summary_text: parsed.summary_text,
         bullets: parsed.bullets,
-        model_name: 'gemini-pro',
+        model_name: 'gemini-3-flash-preview',
       })
       .select()
       .single();

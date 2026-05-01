@@ -87,7 +87,7 @@ Acesso público começa pela **Landing Page** (`/`), que apresenta a plataforma 
 | Estado servidor | TanStack React Query | 5 |
 | Backend / DB | Supabase (PostgreSQL + Auth + Storage) | 2 |
 | Funções serverless | Supabase Edge Functions (Deno) | — |
-| IA | Google Gemini Pro API | — |
+| IA | Google Gemini 3 Flash Preview API | — |
 | Vídeos | YouTube (embed) | — |
 | Datas | Day.js | 1 |
 | Linting | ESLint 9 + typescript-eslint | 9 / 8 |

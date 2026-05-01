@@ -7,9 +7,33 @@ interface Props {
   summary: VideoSummary;
 }
 
+function parseSummaryText(raw: string): { text: string; bullets: string[] } {
+  try {
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]);
+      return {
+        text: parsed.summary_text ?? raw,
+        bullets: Array.isArray(parsed.bullets) ? parsed.bullets : [],
+      };
+    }
+  } catch {
+    // not JSON, use as-is
+  }
+  return { text: raw, bullets: [] };
+}
+
 const SummaryPanel: React.FC<Props> = ({ summary }) => {
   const [expanded, setExpanded] = useState(false);
-  const bullets = Array.isArray(summary.bullets) ? summary.bullets as string[] : [];
+
+  const isRawJson = summary.summary_text?.trimStart().startsWith('{');
+  const { text, bullets: parsedBullets } = isRawJson
+    ? parseSummaryText(summary.summary_text)
+    : { text: summary.summary_text, bullets: [] };
+
+  const bullets = Array.isArray(summary.bullets) && summary.bullets.length > 0
+    ? summary.bullets as string[]
+    : parsedBullets;
 
   return (
     <Paper
@@ -18,12 +42,14 @@ const SummaryPanel: React.FC<Props> = ({ summary }) => {
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
         <AutoAwesome color="primary" fontSize="small" />
-        <Typography variant="subtitle1" sx={{ fontWeight: 600 }} color="primary">Resumo gerado por IA</Typography>
+        <Typography variant="subtitle1" sx={{ fontWeight: 600 }} color="primary">
+          Resumo gerado por IA
+        </Typography>
         <Chip label={summary.model_name} size="small" variant="outlined" color="primary" sx={{ ml: 'auto' }} />
       </Box>
 
-      <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.8 }}>
-        {summary.summary_text}
+      <Typography variant="body2" color="text.primary" sx={{ lineHeight: 1.8, whiteSpace: 'pre-line' }}>
+        {text}
       </Typography>
 
       {bullets.length > 0 && (
