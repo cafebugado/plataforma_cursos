@@ -56,6 +56,16 @@ export const upsertVideoProgress = async (progress: Omit<VideoProgress, 'id'>) =
   return data as unknown as VideoProgress;
 };
 
+export const getCourseAllProgress = async (userId: string, courseId: string): Promise<VideoProgress[]> => {
+  const { data, error } = await db
+    .from('video_progress')
+    .select('*')
+    .eq('user_id', userId)
+    .eq('course_id', courseId);
+  if (error) throw error;
+  return (data ?? []) as unknown as VideoProgress[];
+};
+
 export const getCourseProgress = async (userId: string, courseId: string): Promise<number> => {
   const { data: videos, error: videosError } = await db
     .from('videos')

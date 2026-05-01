@@ -52,9 +52,13 @@ Acesso público começa pela **Landing Page** (`/`), que apresenta a plataforma 
 - Cadastro, login e recuperação de senha
 - Navegação e busca no catálogo de cursos publicados
 - Matrícula em cursos
-- Player de videoaulas com rastreamento de progresso por vídeo
+- Player de videoaulas integrado ao `StudentShell` (header sempre visível)
+- Sidebar do player com módulos recolhíveis (acordeão): apenas o módulo atual fica aberto
+- Desbloqueio progressivo de aulas: cada aula só é liberada ao assistir ≥ 80 % da anterior ou marcá-la como concluída
+- Avaliação por módulo (quiz): aparece na sidebar após a última aula do módulo, só é liberada quando essa aula for concluída
+- Quiz em formato passo a passo (uma questão por vez) com barra de progresso, feedback imediato por questão e tela de resultado com revisão completa
+- Próximo módulo bloqueado até o quiz do módulo anterior ser aprovado
 - Geração de resumos por IA (Google Gemini) para cada vídeo
-- Realização de quizzes com pontuação e múltiplas tentativas
 - Visualização do progresso por curso e por módulo
 - Gerenciamento de perfil e avatar
 

@@ -6,14 +6,12 @@ import {
   CircularProgress, Divider, Grid, List, ListItem, ListItemIcon, ListItemText,
   Typography,
 } from '@mui/material';
-import { ExpandMore, PlayCircle, Lock, Quiz } from '@mui/icons-material';
+import { ExpandMore, PlayCircle, Lock } from '@mui/icons-material';
 import { getCourseBySlug } from '../../services/supabase/courses';
 import { getEnrollment, enrollInCourse } from '../../services/supabase/progress';
-import { getQuizByModule } from '../../services/supabase/quiz';
 import { useAuth } from '../auth/AuthContext';
 import PageHeader from '../../components/common/PageHeader';
 import CategoryChips from '../../components/common/CategoryChips';
-import QuizPanel from '../quiz/QuizPanel';
 
 const CourseDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -31,14 +29,6 @@ const CourseDetailPage: React.FC = () => {
     queryKey: ['enrollment', user?.id, course?.id],
     queryFn: () => getEnrollment(user!.id, course!.id),
     enabled: !!user && !!course,
-  });
-
-  const lastModule = course?.modules?.[course.modules.length - 1];
-
-  const { data: finalQuiz } = useQuery({
-    queryKey: ['quiz-module', lastModule?.id],
-    queryFn: () => getQuizByModule(lastModule!.id),
-    enabled: !!lastModule,
   });
 
   const enrollMutation = useMutation({
@@ -102,21 +92,6 @@ const CourseDetailPage: React.FC = () => {
             </Accordion>
           ))}
 
-          {finalQuiz && finalQuiz.questions && finalQuiz.questions.length > 0 && (
-            <Box sx={{ mt: 4 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                <Quiz color="primary" />
-                <Typography variant="h5" sx={{ fontWeight: 700 }}>Avaliação Final do Curso</Typography>
-              </Box>
-              {enrollment && user ? (
-                <QuizPanel quiz={finalQuiz} moduleId={lastModule!.id} userId={user.id} />
-              ) : (
-                <Alert severity="info" icon={<Quiz />}>
-                  Matricule-se no curso para acessar a avaliação final.
-                </Alert>
-              )}
-            </Box>
-          )}
         </Grid>
 
         <Grid size={{ xs: 12, md: 4 }}>

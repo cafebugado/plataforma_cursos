@@ -74,6 +74,23 @@ export const addOption = async (questionId: string, optionText: string, isCorrec
   return data;
 };
 
+export const getQuizPassedByModule = async (userId: string, moduleId: string): Promise<boolean> => {
+  const { data: quiz, error: quizErr } = await db
+    .from('module_quizzes')
+    .select('id')
+    .eq('module_id', moduleId)
+    .single();
+  if (quizErr || !quiz) return false;
+
+  const { data: attempts, error } = await db
+    .from('quiz_attempts')
+    .select('passed')
+    .eq('user_id', userId)
+    .eq('quiz_id', (quiz as { id: string }).id);
+  if (error) return false;
+  return (attempts ?? []).some((a: { passed: boolean }) => a.passed);
+};
+
 export const getAttemptsByUser = async (userId: string, quizId: string) => {
   const { data, error } = await db
     .from('quiz_attempts')

@@ -71,15 +71,6 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: '/app/learn/:courseId/:moduleId/:videoId',
-    element: (
-      <ProtectedRoute>
-        <Suspense fallback={<Fallback />}><LessonPlayer /></Suspense>
-      </ProtectedRoute>
-    ),
-  },
-
-  {
     path: '/app',
     element: (
       <ProtectedRoute>
@@ -90,6 +81,7 @@ export const router = createBrowserRouter([
       { index: true, element: wrap(StudentDashboard) },
       { path: 'courses', element: wrap(CourseCatalog) },
       { path: 'courses/:slug', element: wrap(CourseDetailPage) },
+      { path: 'learn/:courseId/:moduleId/:videoId', element: wrap(LessonPlayer) },
       { path: 'progress', element: wrap(ProgressPage) },
       { path: 'profile', element: wrap(ProfilePage) },
     ],
